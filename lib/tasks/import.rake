@@ -49,7 +49,7 @@ end
 
 namespace :db do
   desc "Clear out data from tables"
-  task :clear_data => :environment do
+  task clear_data: :environment do
     # Clear the tables
     WorkOrder.delete_all
     Technician.delete_all
