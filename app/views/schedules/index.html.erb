@@ -1,0 +1,58 @@
+
+
+
+<div class="container">
+  <div id="available-time-popup" style="display: none; position: absolute; background-color: white; border: 1px solid black; padding: 10px; border-radius: 5px; z-index: 1000;">
+      <p id="available-time-message"></p>
+  </div>
+  <div class="row">
+    <div class="col-2">
+      <div class="time-column">
+        <% (0..23).each do |hour| %>
+            <% d = DateTime.new(2010, 1, 1, hour, 0, 0) %>
+            <div class="time-label"><%= d.strftime("%I:%M%p") %></div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="col-10">
+    <div data-controller="schedule">
+
+          <div class="schedule-grid" data-schedule-target="grid"> 
+      <div class="row">
+       
+      
+        <% @technicians.each do |technician| %>
+          <div class="col">
+            <div class="technician-column">
+              <div class="technician-name ">
+                <strong><%= technician.name %></strong>
+              </div>
+           
+
+              <% technician.work_orders.each do |work_order| %>
+                <% top_position = work_order.time.hour * 100 %>
+                <% height = work_order.duration * 100 / 60 %>
+                <div 
+                  class="work-order position-absolute" 
+                  style="top: <%= top_position %>px; height: <%= height %>px;"
+                  data-start="<%= work_order.time %>" 
+                  data-end="<%= work_order.time + work_order.duration.minutes %>">
+                  <div><%= work_order.location.name %>, <%= work_order.location.city %></div>
+                  <div>Start: <%= work_order.time.strftime('%H:%M') %></div>
+                  <div>Price: $<%= work_order.price %></div>
+                </div>
+              <% end %>
+              </div>
+
+            </div>
+          
+        <% end %>
+        </div>
+
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
