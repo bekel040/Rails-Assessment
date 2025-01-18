@@ -46,3 +46,15 @@ namespace :import do
     puts "Imported #{work_order_counter} [work orders]"
   end
 end
+
+namespace :db do
+  desc "Clear out data from tables"
+  task :clear_data => :environment do
+    # Clear the tables
+    WorkOrder.delete_all
+    Technician.delete_all
+    Location.delete_all
+
+    puts "Data cleared from work_orders, technicians, and locations."
+  end
+end
