@@ -97,7 +97,6 @@ export default class extends Controller {
 
     // this.calculateAvailableTime(clickedElement, previousOrder, nextOrder);
     const availableTime = calculateAvailableTime(clickedTime, previousOrder, nextOrder, this.pixelsPerHour);
-    console.log("Available time:", availableTime);
 
     // Show the popup with the available time
       this.showPopup(event, availableTime);
@@ -107,21 +106,17 @@ export default class extends Controller {
 
 
   showPopup(event, availableTime) {
-      console.log("show pop up", availableTime)
     
-
       // Extract hours (integer part of decimal)
       const newAvailableTime = availableTime.availableTime;
 
       const hours = Math.floor(newAvailableTime);
-      console.log("hours popup", hours)
 
       // Extract minutes (fractional part * 60)
       const minutes = Math.round((newAvailableTime - hours) * 60);
 
       if (isNaN(availableTime)) {
         this.popupMessage.textContent = `Available Time is not a valid number. This might be the last work order`;
-        console.log("Error: availableTime is not a valid number");
       } 
       else {
         this.popupMessage.textContent = `Available time: ${hours} hours and ${minutes} minutes`;
