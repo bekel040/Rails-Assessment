@@ -25,7 +25,6 @@ module TerrierRailsAssessment
     # config.eager_load_paths << Rails.root.join("extras")
     config.time_zone = "UTC"
     config.active_record.default_timezone = :utc
-    config.assets.paths += [Rails.root.join('app', 'assets', 'stylesheets')]
-
+    config.assets.paths += [ Rails.root.join("app", "assets", "stylesheets") ]
   end
 end
