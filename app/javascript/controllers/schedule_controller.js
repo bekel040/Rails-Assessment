@@ -5,11 +5,10 @@ import { calculateAvailableTime } from './calculate_available_time';
 export default class extends Controller {
   static targets = ["grid", "popupTemplate"];
   connect() {
-     console.log("herre",this.gridTarget)
      
     // Assign gridTarget to a variable
     this.gridElement = this.element.querySelector(".schedule-grid");
-    console.log("grid element", this.gridElement)
+
     this.gridHeight = this.gridElement.clientHeight; // Calculate grid height here
     this.pixelsPerHour = this.gridHeight / 24; 
 
@@ -23,7 +22,6 @@ export default class extends Controller {
   handleClick(event){
     if (!event.target.classList.contains("work-order")){
       const clickedElement = event.target;
-      console.log("clickedElement", clickedElement)
 
   
       // Get all technician columns
@@ -35,7 +33,6 @@ export default class extends Controller {
       technicianColumns.forEach((column) => {
       // Get work orders within this technician's column
       const columnWorkOrders = Array.from(column.querySelectorAll(".work-order"));
-      console.log("columnworker", columnWorkOrders)
 
       // Add columnWorkOrders to the allWorkOrders array
       this.allWorkOrders.push(...columnWorkOrders); 
@@ -45,61 +42,43 @@ export default class extends Controller {
     let previousOrder = null;
     let nextOrder = null;
 
+    // Calculate clicked time based on mouse position
 
     const clickedTimePosition = event.offsetY; 
     const clickedHour = Math.floor(clickedTimePosition / this.pixelsPerHour); 
     const clickedMinutes = Math.floor(((clickedTimePosition / this.pixelsPerHour) - clickedHour) * 60); 
     const clickedTime = new Date();
     clickedTime.setHours(clickedHour, clickedMinutes); 
-    console.log("clickedTime", clickedTime)
 
-    console.log("work orders",   this.allWorkOrders);
     if (  this.allWorkOrders.length === 0) {
       // No work orders, calculate available time
       console.log("wordorders 0")
-      // this.calculateAvailableTime(clickedElement, null, null);
     } else {
-      console.log("more than 1")
-      // Get previous and next work orders
-      // const clickedTime = new Date(clickedElement.dataset.start);
-        // this.gridElement = this.element.querySelector(".schedule-grid");
-
-      console.log("grid element height", this.pixelsPerHour)
-      // const pixelsPerHour = gridHeight / 24;
-
-    // Calculate clicked time based on mouse position
-      
+           
 
       const sortedWorkOrders =   this.allWorkOrders.sort((a, b) => new Date(a.dataset.start) - new Date(b.dataset.start));
     
-      console.log("sorted work order", sortedWorkOrders)
       const clickedTimeStr = clickedTime.toTimeString().slice(0, 5); 
 
 
       for (const order of sortedWorkOrders) {
-        // const orderTime = order.dataset.start;
         const orderTimeStr = order.dataset.start.split(" ")[1]; 
 
-        console.log("orderTime", orderTimeStr, "clickked time", clickedTimeStr)
         if (orderTimeStr < clickedTimeStr) {
           previousOrder = order;
-          console.log("previious order", previousOrder)
-        } else if (orderTimeStr >= clickedTimeStr) { // Check if orderTime is greater than or equal to clickedTime
+        } else if (orderTimeStr >= clickedTimeStr) { 
           nextOrder = order;
-          console.log("nextOrder order", nextOrder)
 
           break; // Stop iterating after finding next order
         }
       }
-      console.log("previousOrder",previousOrder,"nextOrder",nextOrder)
     }
     
 
-    // this.calculateAvailableTime(clickedElement, previousOrder, nextOrder);
     const availableTime = calculateAvailableTime(clickedTime, previousOrder, nextOrder, this.pixelsPerHour);
 
     // Show the popup with the available time
-      this.showPopup(event, availableTime);
+    this.showPopup(event, availableTime);
 
     }
   }
@@ -107,16 +86,17 @@ export default class extends Controller {
 
   showPopup(event, availableTime) {
     
-      // Extract hours (integer part of decimal)
       const newAvailableTime = availableTime.availableTime;
 
+      // Extract hours
       const hours = Math.floor(newAvailableTime);
 
-      // Extract minutes (fractional part * 60)
+      // Extract minutes 
       const minutes = Math.round((newAvailableTime - hours) * 60);
 
-      if (isNaN(availableTime)) {
-        this.popupMessage.textContent = `Available Time is not a valid number. This might be the last work order`;
+      if (isNaN(newAvailableTime)) {
+
+        this.popupMessage.textContent = `There is no more available work orders that would start after the clicked time`;
       } 
       else {
         this.popupMessage.textContent = `Available time: ${hours} hours and ${minutes} minutes`;

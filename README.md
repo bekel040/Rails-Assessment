@@ -1,24 +1,91 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Pest Control Scheduling System
+    This is a Ruby on Rails application designed to manage and display work orders for pest control technicians. The application features a scheduling grid where technicians' work orders are displayed based on time and location.
 
-Things you may want to cover:
+## Deliverables
+    A public GitHub repository containing the complete source code of the Ruby on Rails application.
+    A README file with sufficient instructions to run the application on a new machine, including the Gemfile, Ruby version, and rake tasks to load data.
+    A brief description of the approach taken, problems faced, and possible future improvements.
+    (BONUS) A hosted URL of the application on platforms like Heroku or Render.
+## Installation
 
-* Ruby version
+### Prerequisites
+    Ensure that you have the latest version of Ruby, Rails and PostgreSQL (or any other SQL database you prefer) installed:
 
-* System dependencies
 
-* Configuration
+## Getting Started
+### Clone the repository:
 
-* Database creation
+    ```
+    git clone https://github.com/bekel040/Rails-Assessment
+    cd pest_control_scheduling
+    ```
+### Install dependencies: Install the required gems using Bundler:
 
-* Database initialization
+    ```
+    bundle install
+    ```
+### Set up the database: Create and migrate the database:
 
-* How to run the test suite
+    ```
+    rake db:create
+    rake db:migrate
+    ```
+### Load CSV data into the database: The application comes with a rake task that loads the data from CSV files into the database. Ensure the CSV files are placed in the correct directory (e.g., db/csv/). To load the data, run the following rake task:
 
-* Services (job queues, cache servers, search engines, etc.)
+    ```
+    rake db:import_csv
+    rake import:data
+    ```
 
-* Deployment instructions
+### Start the Rails server: Once everything is set up, you can start the Rails server:
 
-* ...
+    ```
+    rails server
+    ```
+    Visit http://localhost:3000 in your browser to view the application.
+
+### Features
+    Database Models: The application uses three main tables/models:
+
+    Technician: Stores information about technicians.
+    Location: Stores details about customer locations.
+    WorkOrder: Maps technicians to locations with associated time, duration, and price.
+    Scheduling Grid: The application renders a single-page scheduling grid for a complete day. The grid contains:
+
+    One column for each technician, labeled with their name.
+    A time scale on the left with one row per hour.
+    Blocks representing work orders that span specific time slots, showing the location name, city, start time, and price.
+    Blocks are dynamically generated based on work order data.
+    Popup for Available Time: When a user clicks on an open space in the grid, a popup displays the available time between the previous and next work orders for that technician.
+
+### Data Model
+    The application uses three main models:
+
+    Technician: Represents the technician performing the work.
+    Location: Represents the customer location.
+    WorkOrder: Join table mapping technicians to locations, with a duration in minutes and other relevant fields like price and start time.
+    The data is loaded from CSV files, with each CSV representing data for technicians, locations, and work orders. A rake task (db:import_csv) loads the CSV data into the respective tables.
+
+    User Interface
+    The scheduling grid is rendered as a single-page application, using server-side rendering for the initial load. The grid uses client-side JavaScript to dynamically display work orders and popups for available time.
+
+    Popup Interaction
+    When a user clicks on an open space in the grid, JavaScript calculates the time difference between the adjacent work orders for that technician and displays it in a popup.
+
+    Rake Tasks
+    db:import_csv: Loads data from CSV files into the database. The task is idempotent, ensuring that re-running it does not create duplicate records.
+
+
+### To import data, ensure that CSV files are located in the db/csv/ directory, and run:
+
+    ```
+     rake db:import_csv
+    ```
+
+### Assumptions
+
+The available time between the previous order and the next order is based on the whole work orders array, meaning when a user clicks on open space under one technicians column the next order that is used to calculate available time might be from another technicians column. 
+
+`There is no more available work orders after that start after time` When there is a pop with that, its assumed that the user wants a work order that starts after the time they clicked on site. There might be some work orders still available operating during the clicked time but no more work orders are starting after the clicked time. 
