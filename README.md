@@ -19,7 +19,7 @@
 
     ```
     git clone https://github.com/bekel040/Rails-Assessment
-    cd pest_control_scheduling
+    cd Rails-Assessment
     ```
 ### Install dependencies: Install the required gems using Bundler:
 
@@ -35,41 +35,29 @@
 ### Load CSV data into the database: The application comes with a rake task that loads the data from CSV files into the database. Ensure the CSV files are placed in the correct directory (e.g., db/csv/). To load the data, run the following rake task:
 
     ```
-    rake db:import_csv
     rake import:data
     ```
+### 
 
 ### Start the Rails server: Once everything is set up, you can start the Rails server:
 
     ```
+    rails assets:precompile
     rails server
     ```
     Visit http://localhost:3000 in your browser to view the application.
 
+
 ### Features
-    Database Models: The application uses three main tables/models:
-
-    Technician: Stores information about technicians.
-    Location: Stores details about customer locations.
-    WorkOrder: Maps technicians to locations with associated time, duration, and price.
-    Scheduling Grid: The application renders a single-page scheduling grid for a complete day. The grid contains:
-
-    One column for each technician, labeled with their name.
-    A time scale on the left with one row per hour.
-    Blocks representing work orders that span specific time slots, showing the location name, city, start time, and price.
-    Blocks are dynamically generated based on work order data.
-    Popup for Available Time: When a user clicks on an open space in the grid, a popup displays the available time between the previous and next work orders for that technician.
-
-### Data Model
-    The application uses three main models:
 
     Technician: Represents the technician performing the work.
     Location: Represents the customer location.
     WorkOrder: Join table mapping technicians to locations, with a duration in minutes and other relevant fields like price and start time.
-    The data is loaded from CSV files, with each CSV representing data for technicians, locations, and work orders. A rake task (db:import_csv) loads the CSV data into the respective tables.
+    The data is loaded from CSV files, with each CSV representing data for technicians, locations, and work orders. A rake task loads the CSV data into the respective tables.
 
     User Interface
-    The scheduling grid is rendered as a single-page application, using server-side rendering for the initial load. The grid uses client-side JavaScript to dynamically display work orders and popups for available time.
+    The scheduling grid is rendered as a single-page application, using server-side rendering for the initial load. The grid uses client-side JavaScript to dynamically display work orders and popups for available time. Blocks representing work orders that span specific time slots, showing the location name, city, start time, and price.
+    Blocks are dynamically generated based on work order data.
 
     Popup Interaction
     When a user clicks on an open space in the grid, JavaScript calculates the time difference between the adjacent work orders for that technician and displays it in a popup.
@@ -81,7 +69,7 @@
 ### To import data, ensure that CSV files are located in the db/csv/ directory, and run:
 
     ```
-     rake db:import_csv
+    rake import:data
     ```
 
 ### Assumptions
