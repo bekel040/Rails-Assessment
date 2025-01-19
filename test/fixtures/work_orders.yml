@@ -2,7 +2,7 @@
 
 one:
   technician: one
-  location: MyString
+  location: one
   city: MyString
   time: 2025-01-15 19:46:41
   duration: 1
@@ -10,7 +10,7 @@ one:
 
 two:
   technician: two
-  location: MyString
+  location: two
   city: MyString
   time: 2025-01-15 19:46:41
   duration: 1

@@ -5,5 +5,5 @@ one:
   city: MyString
 
 two:
-  name: MyString
-  city: MyString
+  name: AnotherLocation
+  city: AnotherCity
