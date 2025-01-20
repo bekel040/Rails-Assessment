@@ -41,7 +41,7 @@ gem "thruster", require: false
 
 gem "csv"
 
-gem "importmap-rails", "~> 1.1"
+gem "importmap-rails", "~> 2.1"
 
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
